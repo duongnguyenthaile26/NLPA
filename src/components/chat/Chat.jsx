@@ -47,13 +47,14 @@ const Chat = () => {
       file_name: file_name
     }
     setQuestion("")
-    const response = await fetch("https://us-central1-talktome-e4031.cloudfunctions.net/send-question",{
+    const response = await fetch("https://us-central1-talktome-e4031.cloudfunctions.net/send-question", {
       method: "POST",
       headers:{
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(body)
     })
+    console.log(response)
     const data = await response.json()
     // TODO - show answer on chat
     setCurrentChat(prev=> [...prev,{id:`${docRef.id}-a`,type:"answer",message:data.answer}])
