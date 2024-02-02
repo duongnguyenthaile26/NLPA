@@ -14,7 +14,7 @@ Các bước chạy:
 
     7. Dán đường dẫn đó vào Chrome để đến trang web
 
-Hiện tại, chạy trên browser sẽ bị dính lỗi CORS, nên tải Google Chrome về và chạy như sau:
+Hiện tại, chạy trên browser sẽ bị dính lỗi CORS, nên tải Google Chrome về và chạy như sau (copy vào CMD):
 
 "C:\Program Files\Google\Chrome\Application\chrome.exe" --disable-web-security --disable-gpu --user-data-dir=%LOCALAPPDATA%\Google\chromeTemp
 
