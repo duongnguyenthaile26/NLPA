@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 
-const NavItem = ({ path, name,target }) => {
+const NavItem = ({ path, name, target }) => {
   const [classes, setClasses] = useState("");
   const location = useLocation();
 

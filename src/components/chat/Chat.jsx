@@ -4,33 +4,39 @@ import ScrollableFeed from "react-scrollable-feed";
 import { useUser } from "../../context/UserContext";
 import Message from "./Message";
 import { db } from "../../firebase";
-import { collection, doc, getDocs, orderBy, query, serverTimestamp, setDoc } from "@firebase/firestore";
+import {
+  collection,
+  doc,
+  getDocs,
+  orderBy,
+  query,
+  serverTimestamp,
+  setDoc,
+} from "@firebase/firestore";
 import SpeechToText from "./SpeechToText";
 
 const Chat = () => {
-  const {file_name} = useParams()
-  const {currentUser} = useUser()
+  const { file_name } = useParams();
+  const { currentUser } = useUser();
   const [question, setQuestion] = useState("");
   const [currentChat, setCurrentChat] = useState([]);
   const [chatHistory, setChatHistory] = useState(null);
   const [fetching, setFetching] = useState(false);
 
-
-  const loadHistory = async ()=>{
-    const collectionRef = collection(db,"chats",currentUser.uid,file_name)
-    const q = query(collectionRef,orderBy("created_at"))
-    const snapshot = await getDocs(q)
+  const loadHistory = async () => {
+    const collectionRef = collection(db, "chats", currentUser.uid, file_name);
+    const q = query(collectionRef, orderBy("created_at"));
+    const snapshot = await getDocs(q);
     const list = [];
-    snapshot.forEach(chat=>{
-      list.push({id:chat.id, ...chat.data()});
-    })
+    snapshot.forEach((chat) => {
+      list.push({ id: chat.id, ...chat.data() });
+    });
 
-    setChatHistory(list)
-    
-  }
-  useEffect(()=>{
-    loadHistory()
-  },[])
+    setChatHistory(list);
+  };
+  useEffect(() => {
+    loadHistory();
+  }, []);
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (question.trim() === "") {
@@ -38,39 +44,48 @@ const Chat = () => {
     }
     // TODO - show question on chat
     setFetching(true);
-    const docRef = doc(collection(db,"chats",currentUser.uid,file_name))
-    setCurrentChat(prev=> [...prev,{id:`${docRef.id}-q`,type:"question",message:question}])
+    const docRef = doc(collection(db, "chats", currentUser.uid, file_name));
+    setCurrentChat((prev) => [
+      ...prev,
+      { id: `${docRef.id}-q`, type: "question", message: question },
+    ]);
     // getting answer
     const body = {
       question_content: question,
       user_id: currentUser.uid,
-      file_name: file_name
-    }
-    setQuestion("")
-    const response = await fetch("https://us-central1-talktome-e4031.cloudfunctions.net/send-question", {
-      method: "POST",
-      headers:{
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(body)
-    })
-    console.log(response)
-    const data = await response.json()
+      file_name: file_name,
+    };
+    setQuestion("");
+    const response = await fetch(
+      "https://us-central1-talktome-e4031.cloudfunctions.net/send-question",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      }
+    );
+    console.log(response);
+    const data = await response.json();
     // TODO - show answer on chat
-    setCurrentChat(prev=> [...prev,{id:`${docRef.id}-a`,type:"answer",message:data.answer}])
+    setCurrentChat((prev) => [
+      ...prev,
+      { id: `${docRef.id}-a`, type: "answer", message: data.answer },
+    ]);
     // TODO - store answer in firestore
-    setFetching(false)
+    setFetching(false);
     const convoItem = {
       question,
       answer: data.answer,
-      created_at: serverTimestamp()
-    }
-    await setDoc(docRef, convoItem)
-    console.log(convoItem)
+      created_at: serverTimestamp(),
+    };
+    await setDoc(docRef, convoItem);
+    console.log(convoItem);
   };
-  
+
   let synthesis;
-  if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
+  if ("SpeechRecognition" in window || "webkitSpeechRecognition" in window) {
     synthesis = true;
   } else {
     synthesis = false;
@@ -79,19 +94,41 @@ const Chat = () => {
   return (
     <div>
       <ScrollableFeed className="mb-16">
-       {chatHistory? chatHistory.map(chat=>(
-        <div key={`${chat.id}`}>
-        <Message  type="question" message={chat.question} profilePic={currentUser.profile_pic}/>
-        <Message type="answer" message={chat.answer} profilePic="/bot.png" />
-        </div>
-       )): <p>Loading...</p>}
-       {currentChat && currentChat.map(item=>(
-        <Message key={item.id} {...item} profilePic={`${item.type == 'question'? currentUser.profile_pic:"/bot.png"}`}/>
-       ))}
+        {chatHistory ? (
+          chatHistory.map((chat) => (
+            <div key={`${chat.id}`}>
+              <Message
+                type="question"
+                message={chat.question}
+                profilePic={currentUser.profile_pic}
+              />
+              <Message
+                type="answer"
+                message={chat.answer}
+                profilePic="/bot.png"
+              />
+            </div>
+          ))
+        ) : (
+          <p>Loading...</p>
+        )}
+        {currentChat &&
+          currentChat.map((item) => (
+            <Message
+              key={item.id}
+              {...item}
+              profilePic={`${
+                item.type == "question" ? currentUser.profile_pic : "/bot.png"
+              }`}
+            />
+          ))}
       </ScrollableFeed>
-          <div className="fixed bottom-0 w-screen">
-      <div className="flex flex-row my-4 self-center px-1">
-        <form onSubmit={handleSubmit} className="flex flex-row justify-between self-center flex-grow">
+      <div className="fixed bottom-0 w-screen">
+        <div className="flex flex-row my-4 self-center px-1">
+          <form
+            onSubmit={handleSubmit}
+            className="flex flex-row justify-between self-center flex-grow"
+          >
             <input
               type="text"
               value={question}
@@ -101,14 +138,18 @@ const Chat = () => {
             />
             <button
               type="submit"
-              className={`mx-2 rounded  px-2 my-1 text-white font-medium focus:ring-4 focus:outline-none focus:ring-blue-300 ${fetching? 'cursor-not-allowed bg-gray-500 hover:bg-gray-800':' bg-blue-500 hover:bg-blue-600 '}`}
-              disabled={fetching?"true":false}
+              className={`mx-2 rounded  px-2 my-1 text-white font-medium focus:ring-4 focus:outline-none focus:ring-blue-300 ${
+                fetching
+                  ? "cursor-not-allowed bg-gray-500 hover:bg-gray-800"
+                  : " bg-blue-500 hover:bg-blue-600 "
+              }`}
+              disabled={fetching ? "true" : false}
             >
               Send
             </button>
-        </form>
-        <SpeechToText question={question} setQuestion={setQuestion} />
-      </div>
+          </form>
+          <SpeechToText question={question} setQuestion={setQuestion} />
+        </div>
       </div>
     </div>
   );

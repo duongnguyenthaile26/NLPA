@@ -117,7 +117,9 @@ const Home = () => {
                 Combine real-world information with your files.
               </h6>
               <p className="mb-3 text-sm text-gray-700">
-              Harness the power of AI for fact checking and merging real-world information with your files. Unlock accurate insights, enhance credibility, and gain a comprehensive understanding. 
+                Harness the power of AI for fact checking and merging real-world
+                information with your files. Unlock accurate insights, enhance
+                credibility, and gain a comprehensive understanding.
               </p>
             </div>
           </div>
@@ -129,9 +131,9 @@ const Home = () => {
       <div class="px-4 py-16 mx-auto w-full bg-gray-100 md:px-24 lg:px-8 lg:py-20">
         <div class="grid gap-6 row-gap-10 lg:grid-cols-2 max-w-6xl mx-auto">
           <div class="lg:py-6 lg:pr-16">
-          <h2 className="max-w-lg mb-6 font-sans text-3xl font-bold leading-none tracking-tight text-gray-900 sm:text-4xl md:mx-auto">
-            How TalkToMe Works
-          </h2>
+            <h2 className="max-w-lg mb-6 font-sans text-3xl font-bold leading-none tracking-tight text-gray-900 sm:text-4xl md:mx-auto">
+              How TalkToMe Works
+            </h2>
             <div class="flex">
               <div class="flex flex-col items-center mr-4">
                 <div>
@@ -258,12 +260,17 @@ const Home = () => {
 
       {/* Footer */}
 
-<footer class="bg-white dark:bg-gray-800">
-    <div class="w-full mx-auto max-w-full p-4 md:flex md:items-center md:justify-between">
-      <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2023 <a href="https://flowbite.com/" class="hover:underline">TalkToMe™</a>. All Rights Reserved.
-    </span>
-    </div>
-</footer>
+      <footer class="bg-white dark:bg-gray-800">
+        <div class="w-full mx-auto max-w-full p-4 md:flex md:items-center md:justify-between">
+          <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400">
+            © 2023{" "}
+            <a href="https://flowbite.com/" class="hover:underline">
+              TalkToMe™
+            </a>
+            . All Rights Reserved.
+          </span>
+        </div>
+      </footer>
     </>
   );
 };

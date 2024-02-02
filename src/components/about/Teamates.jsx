@@ -1,6 +1,6 @@
 import React from "react";
 
-const Teamates = ({name, github, linkedin, picture}) => {
+const Teamates = ({ name, github, linkedin, picture }) => {
   return (
     <div class="w-64 max-w-sm my-5 transition duration-300 hover:scale-110 bg-white border border-gray-200 rounded-lg shadow-xl dark:bg-gray-800 dark:border-gray-700 pt-8">
       <div class="flex flex-col items-center pb-10">
@@ -19,16 +19,18 @@ const Teamates = ({name, github, linkedin, picture}) => {
           <a
             href={github}
             class="inline-flex items-center px-4 py-2 text-sm"
-            target="_blank" rel="noopener noreferrer"
+            target="_blank"
+            rel="noopener noreferrer"
           >
-            <img src="/github.png"/>
+            <img src="/github.png" />
           </a>
           <a
             href={linkedin}
             class="inline-flex items-center px-4 py-2 text-sm"
-            target="_blank" rel="noopener noreferrer"
+            target="_blank"
+            rel="noopener noreferrer"
           >
-            <img src="/linkedin.png"/>
+            <img src="/linkedin.png" />
           </a>
         </div>
       </div>

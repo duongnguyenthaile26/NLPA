@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import annyang from 'annyang';
+import React, { useState, useEffect } from "react";
+import annyang from "annyang";
 
-const SpeechToText = ({question, setQuestion}) => {
+const SpeechToText = ({ question, setQuestion }) => {
   const [isListening, setIsListening] = useState(false);
   // const [annyang, setAnnyang] = useState("");
   // const annyang = await import ("annyang");
-  
+
   // useEffect(() => {
   //   async () => {
   //     const annyang = await import ("annyang");
@@ -16,21 +16,23 @@ const SpeechToText = ({question, setQuestion}) => {
   useEffect(() => {
     if (isListening) {
       annyang.start();
-      annyang.addCallback('result', handleResult);
+      annyang.addCallback("result", handleResult);
     } else {
       annyang.abort();
-      annyang.removeCallback('result', handleResult);
+      annyang.removeCallback("result", handleResult);
     }
 
     return () => {
       annyang.abort();
-      annyang.removeCallback('result', handleResult);
+      annyang.removeCallback("result", handleResult);
     };
   }, [isListening]);
 
   const handleResult = (phrases) => {
     const recognizedText = phrases[0];
-    setQuestion((prev) => {return prev + recognizedText});
+    setQuestion((prev) => {
+      return prev + recognizedText;
+    });
   };
 
   const toggleListening = () => {
@@ -39,11 +41,13 @@ const SpeechToText = ({question, setQuestion}) => {
 
   return (
     <div>
-      <button
-        onClick={toggleListening}
-        className=""
-      >
-        {<img src={isListening ? '../../../mic-on.png' : '../../../mic-off.png'} className='rounded-full h-10 cursor-pointer'/> }
+      <button onClick={toggleListening} className="">
+        {
+          <img
+            src={isListening ? "../../../mic-on.png" : "../../../mic-off.png"}
+            className="rounded-full h-10 cursor-pointer"
+          />
+        }
       </button>
     </div>
   );
